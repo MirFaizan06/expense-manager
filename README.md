@@ -1,5 +1,7 @@
 # Expense Manager
 
+![Expense Manager Banner](public/banner.png)
+
 > A clean, private, and fully offline personal expense tracker built with React Native (Expo).
 > Designed for daily use — track credits, debits, view reports, convert currencies, and backup your data.
 
