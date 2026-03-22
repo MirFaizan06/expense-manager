@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   View,
   Text,
@@ -24,16 +24,28 @@ export default function ExportImportScreen({ navigation }) {
   const { transactions, restoreTransactions } = useTransaction();
   const { currencyCode, applyCurrency } = useCurrency();
   const { applyTheme, colors } = useTheme();
-  const { t } = useLanguage();
+  const { t, langCode, changeLanguage } = useLanguage();
 
   const [exporting, setExporting] = useState(false);
   const [importing, setImporting] = useState(false);
   const [lastExportVersion, setLastExportVersion] = useState(null);
 
+  useEffect(() => {
+    getExportVersion().then((v) => {
+      const minor = parseInt(v.split('.')[1], 10);
+      if (minor > 0) setLastExportVersion(v);
+    });
+  }, []);
+
   const handleExport = async () => {
     setExporting(true);
     try {
-      const settings = (await loadSettings()) || { currency: currencyCode, theme: 'nature' };
+      const saved = (await loadSettings()) || {};
+      const settings = {
+        currency: saved.currency || currencyCode,
+        theme: saved.theme || 'nature',
+        language: langCode,
+      };
       const version = await exportData(user, transactions, settings);
       setLastExportVersion(version);
       Alert.alert(t('success'), `${t('export_success')}\nVersion: ${version}`);
@@ -63,6 +75,7 @@ export default function ExportImportScreen({ navigation }) {
             if (parsed.settings) {
               if (parsed.settings.currency) applyCurrency(parsed.settings.currency);
               if (parsed.settings.theme) applyTheme(parsed.settings.theme);
+              if (parsed.settings.language) await changeLanguage(parsed.settings.language);
             }
             Alert.alert(t('success'), t('import_success'));
           } catch (e) {

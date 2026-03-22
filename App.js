@@ -1,6 +1,9 @@
 import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { enableScreens } from 'react-native-screens';
 import React, { useMemo } from 'react';
+import { View } from 'react-native';
+import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -23,6 +26,8 @@ import TransactionScreen from './src/screens/TransactionScreen';
 import ExportImportScreen from './src/screens/ExportImportScreen';
 
 import { moderateScale, fontScale } from './src/utils/scale';
+
+enableScreens();
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -125,6 +130,12 @@ function AppNavigator() {
 }
 
 export default function App() {
+  const [fontsLoaded] = useFonts(Ionicons.font);
+
+  if (!fontsLoaded) {
+    return <View style={{ flex: 1 }} />;
+  }
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
