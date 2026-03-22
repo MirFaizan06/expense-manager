@@ -31,11 +31,12 @@
       "backgroundColor": "#F5F5DC"
     },
     "plugins": [
-      "expo-document-picker"
+      "expo-document-picker",
+      "expo-font"
     ],
     "extra": {
       "eas": {
-        "projectId": "your-eas-project-id-here"
+        "projectId": "0115864d-4b1c-4eef-ad64-3e52d87148b9"
       }
     }
   }
