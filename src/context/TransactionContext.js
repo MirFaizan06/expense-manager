@@ -18,9 +18,15 @@ export const TransactionProvider = ({ children }) => {
   }, [transactions, isLoaded]);
 
   const loadAll = async () => {
-    const saved = await loadTransactions();
-    setTransactions(saved || []);
-    setIsLoaded(true);
+    try {
+      const saved = await loadTransactions();
+      setTransactions(saved || []);
+      setIsLoaded(true);
+    } catch (e) {
+      console.error('TransactionContext loadAll error:', e);
+      setTransactions([]);
+      setIsLoaded(true);
+    }
   };
 
   const addTransaction = (transaction) => {

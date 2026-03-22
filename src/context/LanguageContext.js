@@ -13,10 +13,14 @@ export const LanguageProvider = ({ children }) => {
   }, []);
 
   const loadLanguage = async () => {
-    const saved = await AsyncStorage.getItem('em_language');
-    if (saved && LANGUAGES[saved]) {
-      setLangCode(saved);
-      setLanguage(LANGUAGES[saved]);
+    try {
+      const saved = await AsyncStorage.getItem('em_language');
+      if (saved && LANGUAGES[saved]) {
+        setLangCode(saved);
+        setLanguage(LANGUAGES[saved]);
+      }
+    } catch (e) {
+      console.error('LanguageContext loadLanguage error:', e);
     }
   };
 

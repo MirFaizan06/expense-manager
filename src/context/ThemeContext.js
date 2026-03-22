@@ -12,9 +12,13 @@ export const ThemeProvider = ({ children }) => {
   }, []);
 
   const loadTheme = async () => {
-    const settings = await loadSettings();
-    if (settings && settings.theme) {
-      setIsDarkMode(settings.theme === 'dark');
+    try {
+      const settings = await loadSettings();
+      if (settings && settings.theme) {
+        setIsDarkMode(settings.theme === 'dark');
+      }
+    } catch (e) {
+      console.error('ThemeContext loadTheme error:', e);
     }
   };
 

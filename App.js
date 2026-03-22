@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React, { useMemo } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
@@ -125,18 +126,20 @@ function AppNavigator() {
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <LanguageProvider>
-        <ThemeProvider>
-          <CurrencyProvider>
-            <AuthProvider>
-              <TransactionProvider>
-                <AppNavigator />
-              </TransactionProvider>
-            </AuthProvider>
-          </CurrencyProvider>
-        </ThemeProvider>
-      </LanguageProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <LanguageProvider>
+          <ThemeProvider>
+            <CurrencyProvider>
+              <AuthProvider>
+                <TransactionProvider>
+                  <AppNavigator />
+                </TransactionProvider>
+              </AuthProvider>
+            </CurrencyProvider>
+          </ThemeProvider>
+        </LanguageProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

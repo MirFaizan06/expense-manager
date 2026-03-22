@@ -106,7 +106,7 @@ export default function TransactionItem({ transaction }) {
       <View style={styles.right}>
         <Text style={styles.amount}>
           {sign}
-          {transaction.amount.toFixed(2)}
+          {(transaction.amount ?? 0).toFixed(2)}
         </Text>
         <Text style={styles.currencyTag}>{transaction.currency}</Text>
       </View>

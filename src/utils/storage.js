@@ -9,30 +9,60 @@ const KEYS = {
 };
 
 export const saveUser = async (user) => {
-  await AsyncStorage.setItem(KEYS.USER, JSON.stringify(user));
+  try {
+    await AsyncStorage.setItem(KEYS.USER, JSON.stringify(user));
+  } catch (e) {
+    console.error('saveUser error:', e);
+    throw e;
+  }
 };
 
 export const loadUser = async () => {
-  const raw = await AsyncStorage.getItem(KEYS.USER);
-  return raw ? JSON.parse(raw) : null;
+  try {
+    const raw = await AsyncStorage.getItem(KEYS.USER);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    console.error('loadUser error:', e);
+    return null;
+  }
 };
 
 export const saveTransactions = async (transactions) => {
-  await AsyncStorage.setItem(KEYS.TRANSACTIONS, JSON.stringify(transactions));
+  try {
+    await AsyncStorage.setItem(KEYS.TRANSACTIONS, JSON.stringify(transactions));
+  } catch (e) {
+    console.error('saveTransactions error:', e);
+    throw e;
+  }
 };
 
 export const loadTransactions = async () => {
-  const raw = await AsyncStorage.getItem(KEYS.TRANSACTIONS);
-  return raw ? JSON.parse(raw) : [];
+  try {
+    const raw = await AsyncStorage.getItem(KEYS.TRANSACTIONS);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.error('loadTransactions error:', e);
+    return [];
+  }
 };
 
 export const saveSettings = async (settings) => {
-  await AsyncStorage.setItem(KEYS.SETTINGS, JSON.stringify(settings));
+  try {
+    await AsyncStorage.setItem(KEYS.SETTINGS, JSON.stringify(settings));
+  } catch (e) {
+    console.error('saveSettings error:', e);
+    throw e;
+  }
 };
 
 export const loadSettings = async () => {
-  const raw = await AsyncStorage.getItem(KEYS.SETTINGS);
-  return raw ? JSON.parse(raw) : null;
+  try {
+    const raw = await AsyncStorage.getItem(KEYS.SETTINGS);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    console.error('loadSettings error:', e);
+    return null;
+  }
 };
 
 export const getExportVersion = async () => {
@@ -45,12 +75,17 @@ export const setExportVersion = async (version) => {
 };
 
 export const restoreAll = async ({ user, transactions, settings, exportVersion }) => {
-  const ops = [];
-  if (user) ops.push([KEYS.USER, JSON.stringify(user)]);
-  if (transactions) ops.push([KEYS.TRANSACTIONS, JSON.stringify(transactions)]);
-  if (settings) ops.push([KEYS.SETTINGS, JSON.stringify(settings)]);
-  if (exportVersion) ops.push([KEYS.EXPORT_VERSION, exportVersion]);
-  if (ops.length > 0) {
-    await AsyncStorage.multiSet(ops);
+  try {
+    const ops = [];
+    if (user) ops.push([KEYS.USER, JSON.stringify(user)]);
+    if (transactions) ops.push([KEYS.TRANSACTIONS, JSON.stringify(transactions)]);
+    if (settings) ops.push([KEYS.SETTINGS, JSON.stringify(settings)]);
+    if (exportVersion) ops.push([KEYS.EXPORT_VERSION, exportVersion]);
+    if (ops.length > 0) {
+      await AsyncStorage.multiSet(ops);
+    }
+  } catch (e) {
+    console.error('restoreAll error:', e);
+    throw e;
   }
 };

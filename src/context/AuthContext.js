@@ -8,28 +8,33 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const login = async (username, password) => {
-    const trimmedUser = username.trim();
-    if (!trimmedUser || !password) {
-      return { success: false, error: 'empty' };
+    try {
+      const trimmedUser = username.trim();
+      if (!trimmedUser || !password) {
+        return { success: false, error: 'empty' };
+      }
+
+      const storedUser = await loadUser();
+
+      if (!storedUser) {
+        const newUser = { username: trimmedUser, password };
+        await saveUser(newUser);
+        setUser(newUser);
+        setIsLoggedIn(true);
+        return { success: true, isNew: true };
+      }
+
+      if (storedUser.username === trimmedUser && storedUser.password === password) {
+        setUser(storedUser);
+        setIsLoggedIn(true);
+        return { success: true, isNew: false };
+      }
+
+      return { success: false, error: 'invalid' };
+    } catch (e) {
+      console.error('AuthContext login error:', e);
+      return { success: false, error: 'storage' };
     }
-
-    const storedUser = await loadUser();
-
-    if (!storedUser) {
-      const newUser = { username: trimmedUser, password };
-      await saveUser(newUser);
-      setUser(newUser);
-      setIsLoggedIn(true);
-      return { success: true, isNew: true };
-    }
-
-    if (storedUser.username === trimmedUser && storedUser.password === password) {
-      setUser(storedUser);
-      setIsLoggedIn(true);
-      return { success: true, isNew: false };
-    }
-
-    return { success: false, error: 'invalid' };
   };
 
   const logout = () => {

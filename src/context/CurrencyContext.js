@@ -13,11 +13,15 @@ export const CurrencyProvider = ({ children }) => {
   }, []);
 
   const loadCurrency = async () => {
-    const settings = await loadSettings();
-    if (settings && settings.currency) {
-      const found = getCurrencyByCode(settings.currency);
-      setCurrencyCode(settings.currency);
-      setCurrency(found);
+    try {
+      const settings = await loadSettings();
+      if (settings && settings.currency) {
+        const found = getCurrencyByCode(settings.currency);
+        setCurrencyCode(settings.currency);
+        setCurrency(found);
+      }
+    } catch (e) {
+      console.error('CurrencyContext loadCurrency error:', e);
     }
   };
 
